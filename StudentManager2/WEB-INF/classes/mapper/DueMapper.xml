@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.DueMapper" >
+  <resultMap id="BaseResultMap" type="po.Due" >
+    <result column="tasId" property="tasid" jdbcType="INTEGER" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="TAS_STATUS" property="tasStatus" jdbcType="CHAR" />
+  </resultMap>
+   <resultMap id="BaseResultMap2" type="po.Task" >
+    <id column="TAS_ID" property="tasId" jdbcType="INTEGER" />
+    <result column="TAS_CRE_ID" property="tasCreId" jdbcType="VARCHAR" />
+    <result column="TAS_CRE_DATE" property="tasCreDate" jdbcType="TIMESTAMP" />
+    <result column="TAS_DUE_DATE" property="tasDueDate" jdbcType="TIMESTAMP" />
+    <result column="TAS_TITLE" property="tasTitle" jdbcType="VARCHAR" />
+    <result column="TAS_DESC" property="tasDesc" jdbcType="VARCHAR" />
+    <result column="TAS_DOC_ID" property="tasDocId" jdbcType="VARCHAR" />
+    <result column="TAS_DOC1_NAME" property="tasDoc1Name" jdbcType="VARCHAR" />
+    <result column="TAS_DOC2_NAME" property="tasDoc2Name" jdbcType="VARCHAR" />
+    <result column="TAS_DOC3_NAME" property="tasDoc3Name" jdbcType="VARCHAR" />
+    <result column="TAS_FDOC1_NAME" property="tasFdoc1Name" jdbcType="VARCHAR" />
+    <result column="TAS_FDOC2_NAME" property="tasFdoc2Name" jdbcType="VARCHAR" />
+    <result column="TAS_FDOC3_NAME" property="tasFdoc3Name" jdbcType="VARCHAR" />
+    <result column="TAS_STATUS" property="tasStatus" jdbcType="CHAR" />
+    <result column="TAS_ACADEMY" property="tasAcademy" jdbcType="VARCHAR" />
+    <result column="TAS_GRADE" property="tasGrade" jdbcType="VARCHAR" />
+    <result column="TAS_AC_ID" property="tasAcId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    tasId, USER_ID, TAS_STATUS
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="po.DueExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from due
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="po.DueExample" >
+    delete from due
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="po.Due" >
+    insert into due (tasId, USER_ID, TAS_STATUS
+      )
+    values (#{tasid,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR}, #{tasStatus,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="po.Due" >
+    insert into due
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tasid != null" >
+        tasId,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="tasStatus != null" >
+        TAS_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tasid != null" >
+        #{tasid,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="tasStatus != null" >
+        #{tasStatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="po.DueExample" resultType="java.lang.Integer" >
+    select count(*) from due
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update due
+    <set >
+      <if test="record.tasid != null" >
+        tasId = #{record.tasid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tasStatus != null" >
+        TAS_STATUS = #{record.tasStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update due
+    set tasId = #{record.tasid,jdbcType=INTEGER},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      TAS_STATUS = #{record.tasStatus,jdbcType=CHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <sql id="Task_Column_List" >
+    TAS_ID, TAS_CRE_ID, TAS_CRE_DATE, TAS_DUE_DATE, TAS_TITLE, TAS_DESC, TAS_DOC_ID, 
+    TAS_DOC1_NAME, TAS_DOC2_NAME, TAS_DOC3_NAME, TAS_FDOC1_NAME, TAS_FDOC2_NAME, TAS_FDOC3_NAME, 
+    task.TAS_STATUS, TAS_ACADEMY, TAS_GRADE, TAS_AC_ID
+  </sql>
+  <!-- 分页SQL语句 -->
+	 <select id="selectTaskNotOverDueByTasDueId" resultMap="BaseResultMap2">
+		select
+		<include refid="Task_Column_List" />
+		from  due left outer join task on due.tasId = task.TAS_ID where due.USER_ID = #{tasDueId} and due.TAS_STATUS &lt;&gt; '3' order by task.TAS_CRE_DATE DESC
+		limit #{startPos},#{pageSize}
+	</select> 
+	<!-- 取得记录的总数 -->
+	<select id="selectTaskNotOverDueByTasDueIdCount" resultType="long">
+		SELECT COUNT(*) FROM due where USER_ID = #{tasDueId} and TAS_STATUS &lt;&gt; '3'
+	</select>
+	<!-- 分页SQL语句 -->
+	<select id="selectTaskOverDueByTasDueId" resultMap="BaseResultMap2">
+		select
+		<include refid="Task_Column_List" />
+		from  due left outer join task on due.tasId = task.TAS_ID where due.USER_ID = #{tasDueId} and due.TAS_STATUS = '3' order by task.TAS_CRE_DATE DESC
+		limit #{startPos},#{pageSize}
+	</select>
+	<!-- 取得记录的总数 -->
+	<select id="selectTaskOverDueByTasDueIdCount" resultType="long">
+		SELECT COUNT(*) FROM due where USER_ID = #{tasDueId} and TAS_STATUS = '3'
+	</select>
+</mapper>
